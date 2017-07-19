@@ -11,7 +11,7 @@
           <Menu mnemonicParsing="false" text="个人中心">
             <items>
                 <MenuItem mnemonicParsing="false" onAction="#login" text="登陆" />
-                <MenuItem mnemonicParsing="false" text="退出" />
+                <MenuItem mnemonicParsing="false" text="退出"  onAction="#exit"/>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="帮助">
@@ -32,12 +32,17 @@
         <content>
           <AnchorPane fx:id="showpan" minHeight="0.0" minWidth="0.0">
                <children>
-                  <Label fx:id="talk"/>
+                  <Label fx:id="talk" text="" />
                </children>
           </AnchorPane>
         </content>
       </ScrollPane>
       <TextArea fx:id="textArea" prefHeight="100.0" prefWidth="300.0" text="Hello" />
-      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#sendMessage" text="发送" VBox.vgrow="ALWAYS" />
+      <AnchorPane>
+         <children>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="174.0" layoutY="-1.0" mnemonicParsing="false" onAction="#sendMessage" text="发送" />
+            <Button layoutX="238.0" layoutY="-1.0" mnemonicParsing="false" text="Exit"/>
+         </children>
+      </AnchorPane>
    </children>
 </VBox>

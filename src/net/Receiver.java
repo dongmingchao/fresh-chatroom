@@ -3,17 +3,21 @@ package net;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-
+import Communicator.*;
 public class Receiver extends Thread {
 	volatile boolean shut=false;
 	DataInputStream in;
+	private Controller controller;
+	public void setController(Controller controller){
+	    this.controller=controller;
+    }
 	@Override
 	public void run() {
 		try {
 			while(true){
 			    String x=in.readUTF();
 				if(x.equals("bye")) break;
-                System.out.println(x);
+                controller.Output(x);//TODO:Message(x);
 			}
 			in.close();
 		} catch (IOException e) {

@@ -1,9 +1,7 @@
 package Communicator;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -18,6 +16,7 @@ import javafx.stage.Stage;
 import net.*;
 
 public class Controller {
+    boolean online=true;
     @FXML
     private TextArea textArea;
     @FXML
@@ -27,10 +26,11 @@ public class Controller {
     @FXML
     private Label talk;
     public String linend=System.getProperty("line.separator");
+    public String got="GOT!!";
     public void sendMessage(){
         Message(textArea.getText());
     }
-    public void Message(String obj){
+    public void Message(String obj) {
         talk.setText(talk.getText()+obj+linend);
     }
     public void login() {
@@ -45,33 +45,61 @@ public class Controller {
             e.printStackTrace();
         }
     }
-    GreetingServer aserver = null;
+    GreetingServer aserver = null;//服务器线程
     public void startroom(){
-        Stage roomMess = new Stage();
+        Stage roomPort = new Stage();
         HBox roompane = new HBox();
         TextField locate = new TextField("端口号");
         Button confirm = new Button("确定");
         confirm.setOnAction(event -> {
 			try {
-				aserver = new GreetingServer(9000);
+				aserver=new GreetingServer(Integer.parseInt(locate.getText()));
+				aserver.setControl(this);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            aserver.start();
-            roomMess.close();
-        });
-        Message(aserver.Output);
-        roompane.getChildren().addAll(locate,confirm);
-        roomMess.setTitle("新建房间");
-        roomMess.setScene(new Scene(roompane));
-        roomMess.show();
-    }
-    public void copy(InputStream in, OutputStream out) throws IOException {
-        int c;
-        while ((c = in.read()) != -1) {//每次读取一个字节放入c
-            out.write(c);
-        }
-    }
+			aserver.start();
+            roomPort.close();
 
+        });
+        roompane.getChildren().addAll(locate,confirm);
+        roomPort.setTitle("新建房间");
+        roomPort.setScene(new Scene(roompane));
+        roomPort.show();
+    }/*
+    private Main app;
+    public void setMain(Main app){
+        this.app=app;
+    }*/
+    public void Output(String string){
+        Runnable todo= () -> {
+            //while(online)  TODO:延时刷新
+            Message(string);
+        };
+        Platform.runLater(todo);
+    }
+    public void exit(){
+        aserver.close();
+        Platform.exit();
+    }
+    GreetingClient aclient=null;//客户端
+    public void joinroom(){
+        Stage messtable = new Stage();
+        //HBox table = new HBox();
+        TextField ipandport = new TextField("IP:端口");
+        Button confirm = new Button("确定");
+        //table.getChildren().addAll(ipandport,confirm);
+        messtable.setScene(new Scene(new HBox(ipandport,confirm)));
+        messtable.setTitle("加入房间");
+        messtable.show();
+        confirm.setOnAction(event -> {
+            aclient= new GreetingClient(ipandport.getText().split(":"));
+            aclient.setController(this);
+            messtable.close();
+        });
+    }
 }
