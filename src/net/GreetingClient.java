@@ -3,7 +3,6 @@ package net;
 import Communicator.Controller;
 
 import java.net.*;
-import java.util.Scanner;
 import java.io.*;
  
 public class GreetingClient
