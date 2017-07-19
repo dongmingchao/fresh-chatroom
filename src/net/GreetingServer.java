@@ -71,11 +71,22 @@ public class GreetingServer extends Thread
             }catch(SocketTimeoutException s){
                 output="连接超时";
                 controller.Output(output);
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             }catch(IOException e){
                 e.printStackTrace();
                 output="客户端已断开链接";
                 controller.Output(output);
+                try {
+					serverSocket.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
                 break;
             }
         }

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import Communicator.*;
 public class Receiver extends Thread {
-	volatile boolean shut=false;
+	volatile boolean online=true;
 	DataInputStream in;
 	private Controller controller;
 	public void setController(Controller controller){
@@ -14,11 +14,17 @@ public class Receiver extends Thread {
 	@Override
 	public void run() {
 		try {
-			while(true){
+			while(online){
 			    String x=in.readUTF();
+			    if(x.equals("")) continue;
 				if(x.equals("bye")) break;
                 controller.Output(x);//TODO:Message(x);
-			}
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 			in.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

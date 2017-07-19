@@ -28,7 +28,9 @@ public class Controller {
     public String linend=System.getProperty("line.separator");
     public String got="GOT!!";
     public void sendMessage(){
-        Message(textArea.getText());
+        String ms=textArea.getText();
+        Message(ms);
+        aclient.sendToserver(ms);
     }
     public void Message(String obj) {
         talk.setText(talk.getText()+obj+linend);
@@ -64,7 +66,6 @@ public class Controller {
 			}
 			aserver.start();
             roomPort.close();
-
         });
         roompane.getChildren().addAll(locate,confirm);
         roomPort.setTitle("新建房间");
@@ -77,29 +78,41 @@ public class Controller {
     }*/
     public void Output(String string){
         Runnable todo= () -> {
-            //while(online)  TODO:延时刷新
             Message(string);
         };
         Platform.runLater(todo);
     }
     public void exit(){
-        aserver.close();
+        if(aserver!=null)
+            if(aserver.online)
+                aserver.close();
+        if(aclient!=null) aclient.close();
         Platform.exit();
     }
     GreetingClient aclient=null;//客户端
     public void joinroom(){
         Stage messtable = new Stage();
         //HBox table = new HBox();
-        TextField ipandport = new TextField("IP:端口");
+        TextField ipandport = new TextField("192.168.1.145:9000");
         Button confirm = new Button("确定");
         //table.getChildren().addAll(ipandport,confirm);
         messtable.setScene(new Scene(new HBox(ipandport,confirm)));
         messtable.setTitle("加入房间");
         messtable.show();
         confirm.setOnAction(event -> {
-            aclient= new GreetingClient(ipandport.getText().split(":"));
-            aclient.setController(this);
+            aclient= new GreetingClient(ipandport.getText().split(":"),this);
+            Receiver in = new Receiver(aclient.client);
+            in.setController(this);
+            in.start();
             messtable.close();
         });
+    }
+    public void quitroom(){
+        if(aclient==null&&aserver==null) {
+            Output("您并没有在房间中……");
+            return;
+        }
+        Output("正在退出房间");
+        aclient.close();
     }
 }

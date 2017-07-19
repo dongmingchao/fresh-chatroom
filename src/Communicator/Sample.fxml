@@ -23,7 +23,8 @@
                 <items>
                     <MenuItem fx:id="nowroom" mnemonicParsing="false" text="当前房间" />
                     <MenuItem fx:id="createroom" mnemonicParsing="false" onAction="#startroom" text="新建房间" />
-                    <MenuItem fx:id="joinroom" mnemonicParsing="false" text="加入房间" />
+                    <MenuItem fx:id="joinroom" mnemonicParsing="false" text="加入房间" onAction="#joinroom"/>
+                    <MenuItem fx:id="quitroom" mnemonicParsing="false" text="退出房间" onAction="#quitroom"/>
                 </items>
             </Menu>
         </menus>
