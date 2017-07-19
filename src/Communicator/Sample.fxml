@@ -1,40 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Accordion?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Communicator.Controller">
    <children>
-   <Accordion>
-        <panes>
-          <TitledPane text="登陆" textOverrun="CLIP">
-            <content>
-              <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" visible="false" />
-            </content>
-          </TitledPane>
-        </panes>
-      </Accordion>
-      <ScrollPane prefHeight="198.0" prefWidth="490.0">
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="个人中心">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#login" text="登陆" />
+                <MenuItem mnemonicParsing="false" text="退出" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="帮助">
+            <items>
+              <MenuItem mnemonicParsing="false" text="关于" />
+            </items>
+          </Menu>
+            <Menu fx:id="roomMessage" mnemonicParsing="false" text="房间信息">
+                <items>
+                    <MenuItem fx:id="nowroom" mnemonicParsing="false" text="当前房间" />
+                    <MenuItem fx:id="createroom" mnemonicParsing="false" onAction="#startroom" text="新建房间" />
+                    <MenuItem fx:id="joinroom" mnemonicParsing="false" text="加入房间" />
+                </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+      <ScrollPane prefHeight="300.0">
         <content>
-          <AnchorPane minHeight="-Infinity" minWidth="-Infinity" />
+          <AnchorPane fx:id="showpan" minHeight="0.0" minWidth="0.0">
+               <children>
+                  <Label fx:id="talk"/>
+               </children>
+          </AnchorPane>
         </content>
       </ScrollPane>
-      <VBox alignment="CENTER">
-         <children>
-            <TextArea text="Hello" />
-            <Button fx:id="send"
-                    alignment="CENTER"
-                    contentDisplay="CENTER"
-                    mnemonicParsing="false"
-                    onMouseClicked="#GGGG"
-                    text="发送">
-            </Button>
-         </children>
-      </VBox>
+      <TextArea fx:id="textArea" prefHeight="100.0" prefWidth="300.0" text="Hello" />
+      <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#sendMessage" text="发送" VBox.vgrow="ALWAYS" />
    </children>
 </VBox>
